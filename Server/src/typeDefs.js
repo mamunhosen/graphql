@@ -1,4 +1,4 @@
-export const typeDefs =`#graphql
+export const typeDefs = `#graphql
 
     type Continent {
         id: ID!
@@ -34,10 +34,12 @@ export const typeDefs =`#graphql
     }
 
     type Mutation {
+        addContinent(name: String!): Continent
         addCountry(name: String!, capital: String, currency: String, continent_id: ID!, language_id: ID!): Country
         deleteCountry(id: ID!): Country
         addLanguage(name: String!, code: String): Language
+        deleteLanguage(id: ID!): Language
     }
 
 
-`
+`;

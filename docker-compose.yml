@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  client:
+    build: ./Client
+    ports:
+      - "3000:3000" # Map container port 3000 to host port 3000 for hot reloading in development
+    environment:
+      - REACT_APP_API_URL=http://server:4000 # Set the backend API URL environment variable
+
+  server:
+    build: ./Server
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGO_URI=mongodb://db:27017/locale_information # Set the MongoDB connection string environment variable
+      - PORT=4000
+    depends_on:
+      - db
+    volumes:
+      - ./Server/src:/app/src
+
+  db:
+    image: mongo:latest
+    volumes:
+      - db-data:/data/db # Persist data volume for MongoDB
+    ports:
+      - "27017:27017" # Map container port 27017 to host port 27017
+
+volumes:
+  db-data: # Optional: Define a named volume for MongoDB data persistence
+
+# Optional environment file for each service
+# - volumes:
+#   - ./backend/.env:/app/.env:ro  # Read-only environment file for backend service
+# - volumes:
+#   - ./client/.env:/app/.env:ro  # Read-only environment file for frontend service
