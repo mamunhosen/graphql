@@ -5,15 +5,19 @@ import bodyParser from "body-parser";
 import cors from "cors";
 
 import { typeDefs } from "./typeDefs.js";
-import { resolvers } from "./resolvers.js";
+import { resolvers } from "./resolvers/index.js";
+import connectToMongo from "./db/connection.js";
 
 const app = express();
+
 app.use(bodyParser.json());
 app.use(cors());
 app.use((req, res, next) => {
   res.removeHeader("X-Powered-By");
   next();
 });
+
+await connectToMongo();
 
 const server = new ApolloServer({
   typeDefs,
